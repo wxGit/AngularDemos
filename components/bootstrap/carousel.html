@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="../../assets/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
+<link href="../../assets/vendor/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+
+<script src="../../assets/vendor/angular/angular.min.js"></script>
+<script src="../../assets/vendor/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script type="text/javascript" src="carousel.js"></script>
+</head>
+<body>
+<div class="row">
+    <div class="col-lg-6">
+        <!-- carousel -->
+        <div ng-controller="CarouselDemoCtrl" class="panel b-a" set-ng-animate="false">
+            <div class="panel-heading">
+                Carousel
+            </div>
+            <carousel interval="myInterval">
+                <slide ng-repeat="slide in slides" active="slide.active">
+                    <img ng-src="{{slide.image}}" class="img-full">
+                    <div class="carousel-caption">
+                        <h4>Slide {{$index}}</h4>
+                        <p>{{slide.text}}</p>
+                    </div>
+                </slide>
+            </carousel>
+            <div class="panel-footer">
+                <button type="button" class="btn btn-default m-r" ng-click="addSlide()">Add Slide</button>
+                Interval: <input type="number" class=" w-sm inline" ng-model="myInterval"> ms
+            </div>
+        </div>
+        <!-- / carousel -->
+    </div>
+</div>
+</body>
+</html>

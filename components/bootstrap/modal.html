@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="../../assets/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
+<link href="../../assets/vendor/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+
+<script src="../../assets/vendor/angular/angular.min.js"></script>
+<script src="../../assets/vendor/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script type="text/javascript" src="modal.js"></script>
+</head>
+<body>
+<!-- modal -->
+<div ng-controller="ModalDemoCtrl" class="panel b-a">
+    <script type="text/ng-template" id="myModalContent.html">
+        <div ng-include="'tpl/modal.html'"></div>
+    </script>
+    <div class="panel-heading b-b b-light">Modal</div>
+    <div class="panel-body">
+        <button class="btn btn-success" ng-click="open()">Open me!</button>
+        <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
+        <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
+    </div>
+</div>
+<!-- /modal -->
+</body>
+</html>

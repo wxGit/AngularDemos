@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<link href="../../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="../../assets/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
+<link href="../../assets/vendor/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+
+<script src="../../assets/vendor/angular/angular.min.js"></script>
+<script src="../../assets/vendor/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script type="text/javascript" src="tab.js"></script>
+</head>
+<body>
+<div class="row">
+    <div class="col-lg-6">
+        <!-- tab -->
+        <div ng-controller="TabsDemoCtrl">
+            <h4>Tabs</h4>
+            <p>Select a tab by setting active binding to true:</p>
+            <p>
+                <button class="btn btn-default btn-sm" ng-click="tabs[0].active = true">Select second tab</button>
+                <button class="btn btn-default btn-sm" ng-click="tabs[1].active = true">Select third tab</button>
+                <button class="btn btn-default btn-sm" ng-click="tabs[1].disabled = ! tabs[1].disabled">Enable / Disable third tab</button>
+            </p>
+
+            <tabset class="tab-container">
+                <tab heading="Static title">Static content</tab>
+                <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+                    {{tab.content}}
+                </tab>
+                <tab>
+                    <tab-heading>
+                        <i class="glyphicon glyphicon-bell"></i> Alert!
+                    </tab-heading>
+                    I've got an HTML heading, and a select callback. Pretty cool!
+                </tab>
+            </tabset>
+
+            <tabset vertical="true" type="pills" class="tab-container">
+                <tab heading="Vertical 1">Vertical content 1</tab>
+                <tab heading="Vertical 2">Vertical content 2</tab>
+            </tabset>
+
+            <tabset justified="true" class="tab-container">
+                <tab heading="Justified">Justified content</tab>
+                <tab heading="SJ">Short Labeled Justified content</tab>
+                <tab heading="Long Justified">Long Labeled Justified content</tab>
+            </tabset>
+        </div>
+        <!-- / tab -->
+    </div>
+</div>
+</body>
+</html>
