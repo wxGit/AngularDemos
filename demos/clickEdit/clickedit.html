@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="formDemo">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<script src="../../assets/vendor/angular/angular.min.js"></script>
+<script>
+    app = angular.module("formDemo", []);
+
+    app.directive("clickToEdit", function() {
+        var editorTemplate = '<div class="click-to-edit">' +
+                '<div ng-hide="view.editorEnabled">' +
+                '{{value}} ' +
+                '<a ng-click="enableEditor()" style="color: red">Edit</a>' +
+                '</div>' +
+                '<div ng-show="view.editorEnabled">' +
+                '<input ng-model="view.editableValue">' +
+                '<a href="#" ng-click="save()">Save</a>' +
+                ' or ' +
+                '<a href="#" ng-click="disableEditor()">cancel</a>.' +
+                '</div>' +
+                '</div>';
+
+        return {
+            restrict: "A",
+            replace: true,
+            template: editorTemplate,
+            scope: {
+                value: "=clickToEdit",
+            },
+            controller: function($scope) {
+                $scope.view = {
+                    editableValue: $scope.value,
+                    editorEnabled: false
+                };
+
+                $scope.enableEditor = function() {
+                    $scope.view.editorEnabled = true;
+                    $scope.view.editableValue = $scope.value;
+                };
+
+                $scope.disableEditor = function() {
+                    $scope.view.editorEnabled = false;
+                };
+
+                $scope.save = function() {
+                    $scope.value = $scope.view.editableValue;
+                    $scope.disableEditor();
+                };
+            }
+        };
+    });
+
+    app.controller("LocationFormCtrl", function($scope) {
+        $scope.location = {
+            state: "California",
+            city: "San Francisco",
+            neighbourhood: "Alamo Square"
+        };
+    });
+</script>
+</head>
+<body>
+<div ng-controller="LocationFormCtrl">
+    <h2>Editors</h2>
+    <div class="field">
+        <strong>State:</strong>
+        <div click-to-edit="location.state"></div>
+    </div>
+    <div class="field">
+        <strong>City:</strong>
+        <div click-to-edit="location.city"></div>
+    </div>
+    <div class="field">
+        <strong>Neighbourhood:</strong>
+        <div click-to-edit="location.neighbourhood"></div>
+    </div>
+</div>
+</body>
+</html>
