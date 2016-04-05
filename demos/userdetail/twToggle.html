@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<script src="../../assets/vendor/angular/angular.min.js"></script>
+<script>
+angular.module('myApp',[]).controller('myController',function($scope){
+    $scope.items = ['aaa','bbb','ccc'];
+});
+
+angular.module('myApp').directive('twToggle', function () {
+    return {
+        restrict:'A',
+        scope:true,
+        link: function (scope,element,attrs) {
+            scope.$node = {
+                folded:false,
+                toggle: function () {
+                    this.folded = !this.folded;
+                }
+            };
+        }
+    }    
+});
+</script>
+</head>
+<body>
+<ul ng-controller="myController">
+    <li ng-repeat="item in items" tw-toggle="">
+        <span ng-click="$node.toggle()">切换</span>
+        <ul ng-if="$node.folded">
+            <li>{{item}}</li>
+        </ul>
+    </li>
+</ul>
+</body>
+</html>

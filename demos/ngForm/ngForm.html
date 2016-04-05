@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+<meta charset="UTF-8" ng-app="myApp">
+<title>Title</title>
+<script src="../../assets/vendor/angular/angular.min.js"></script>
+<script>
+angular.module('myApp',[]).controller('myController',function($scope){
+    var users = [
+        {
+            "name":"Cheris",
+            "email":""
+        },
+        {
+            "name":"Adalin",
+            "email":""
+        }
+    ];
+
+    $scope.formData = {};
+    $scope.formData.users = users;
+});
+</script>
+</head>
+<body>
+<div ng-controller="myController">
+    <form name="userForm" novalidate>
+        <div class="form-group" ng-repeat="user in formData.users">
+            <ng-form name="userFieldForm">
+                <label>{{user.name}}'s Email</label>
+                <input type="text" class="form-control" name="email" ng-model="user.email" required>
+                <p class="help-block" ng-show="userFieldForm.email.$invalid">valid email address required</p>
+            </ng-form>
+        </div>
+    </form>
+</div>
+</body>
+</html>

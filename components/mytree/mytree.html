@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>封装tree指令</title>
+<link rel="stylesheet" href="T.css"/>
+<script src="../../assets/vendor/angular/angular.min.js"></script>
+<script>
+angular.module('myApp',[]).controller('myTree',['$scope', function ($scope) {
+    $scope.datas = {
+        "0" : {pid:-1,cn:'本书目录',url:'#'}
+        ,"1" : {pid:0,cn:'第一章 JavaScript概述',url:'/01'}
+        ,"2" : {pid:0,cn:'第二章 用Javascript验证表单',url:'/02'}
+        ,"11" : {pid:1,cn:'1.1 认识JavaScript',url:'javascript:;'}
+        ,"12" : {pid:1,cn:'1.2 配置JavaScript开发环境',url:'javascript:;'}
+        ,"3" : {pid:0,cn:'第三章 JavaScript实现的照片展示',url:'/03'}
+        ,"21" : {pid:2,cn:'2.1  用最简单的表单验证 - 禁止空白的必填项目',url:'javascript:;'}
+        ,"22" : {pid:2,cn:'2.2  处理各种类型的表单元素',url:'javascript:;'}
+        ,"23" : {pid:2,cn:'2.3  输入的邮箱地址正确吗？ 用正则来校验复杂的格式要求',url:'javascript:;'}
+        ,"24" : {pid:2,cn:'2.4  改善用户体验',url:'javascript:;'}
+        ,"31" : {pid:3,cn:'3.1  功能设计',url:'javascript:;'}
+        ,"32" : {pid:3,cn:'3.2  照片加载与定位',url:'javascript:;'}
+        ,"33" : {pid:3,cn:'3.3  响应鼠标动作',url:'javascript:;'}
+    };
+
+    $scope.treeClick = function(node){
+
+    }
+
+}]);
+</script>
+<script src="mytree.js"></script>
+</head>
+<body>
+<div ng-controller="myTree">
+    <z3f-tree id="mytree" tree-data="datas" on-select="treeClick(node)"></z3f-tree>
+</div>
+</body>
+</html>
