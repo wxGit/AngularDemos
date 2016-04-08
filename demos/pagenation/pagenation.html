@@ -10,7 +10,7 @@ angular.module('myApp',[]).controller('myPage', function ($scope) {
     $scope.displayedItemsList = ['11','22','33','44','55','66','77','88','99','1010','1111','1212','1313'];
 
     $scope.currentPage = 0;
-    $scope.pageSize = 5;
+    $scope.pageSize = 6;
     $scope.numberOfPages = function() {
         return Math.ceil($scope.displayedItemsList.length/ $scope.pageSize);
     };
