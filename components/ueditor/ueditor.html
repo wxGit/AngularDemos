@@ -6,8 +6,7 @@
 <script src="../../assets/vendor/angular/angular.min.js"></script>
 <script>
 angular.module('Common', [])
-        .factory('Common', [
-            '$http', '$q', function($http, $q) {
+        .factory('Common', ['$http', '$q', function($http, $q) {
                 return {
                     loadScript: function(url, callback) {
                         var head = document.getElementsByTagName("head")[0];

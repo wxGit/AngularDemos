@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="exampleApp">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<link rel="stylesheet" href="../../assets/plugins/ngDialog/css/ngDialog.min.css">
+<link rel="stylesheet" href="../../assets/plugins/ngDialog/css/ngDialog-theme-plain.min.css">
+<script src="../../assets/vendor/angular/angular.min.js"></script>
+<script src="../../assets/plugins/ngDialog/ngDialog.js"></script>
+<script>
+
+var app = angular.module('exampleApp', ['ngDialog']);
+
+app.controller('MainCtrl', function ($scope, ngDialog) {
+    $scope.clickToOpen = function () {
+        $scope.value = true;
+        $scope.checkInput = function(){
+            console.log('abc');
+        }
+        ngDialog.open({
+            template: 'templateId',
+            className: 'ngdialog-theme-plain',
+            scope: $scope,
+            /*preCloseCallback: function(value) {
+                var nestedConfirmDialog = ngDialog.openConfirm({
+                    template:'\<p>Are you sure you want to close the parent dialog?</p>\
+                                <div class="ngdialog-buttons">\
+                                    <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">No</button>\
+                                    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(1)">Yes</button>\
+                                </div>',
+                    plain: true
+                });
+                return nestedConfirmDialog;
+            }*/
+        });
+    };
+});
+
+</script>
+</head>
+<body>
+<div ng-controller="MainCtrl">
+<script type="text/ng-template" id="templateId">
+    <div class="dialog-contents">
+        <h1>Template heading</h1>
+        <p>Content goes here</p>
+        <span>{{value}}</span>
+        <input type="button" class="ngdialog-button ngdialog-button-primary" value="OK" ng-click="closeThisDialog(0) && checkInput()"/>
+    </div>
+</script>
+<button ng-click="clickToOpen()">点击弹窗</button>
+
+<button type="button"
+        ng-dialog="popupTmpl.html"
+        ng-dialog-class="ngdialog-theme-plain"
+        ng-dialog-close-previous>
+    Open modal text
+</button>
+</div>
+</body>
+</html>
