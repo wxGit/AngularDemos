@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<script src="../../assets/vendor/angular/angular.min.js"></script>
+<script>
+    angular.module('fileReader',[])
+            .factory('fileReader', ["$q", "$log", function($q, $log){
+                var onLoad = function(reader, deferred, scope) {
+                    return function () {
+                        scope.$apply(function () {
+                            deferred.resolve(reader.result);
+                        });
+                    };
+                };
+                var onError = function (reader, deferred, scope) {
+                    return function () {
+                        scope.$apply(function () {
+                            deferred.reject(reader.result);
+                        });
+                    };
+                };
+                var getReader = function(deferred, scope) {
+                    var reader = new FileReader();
+                    reader.onload = onLoad(reader, deferred, scope);
+                    reader.onerror = onError(reader, deferred, scope);
+                    return reader;
+                };
+                var readAsDataURL = function (file, scope) {
+                    var deferred = $q.defer();
+                    var reader = getReader(deferred, scope);
+                    reader.readAsDataURL(file);
+                    return deferred.promise;
+                };
+                return {
+                    readAsDataUrl: readAsDataURL
+                };
+            }]);
+
+
+    angular.module('myApp',['fileReader']).controller('myCtrl',function ($scope,fileReader) {
+        $scope.uploadImage = function (ele) {
+
+            console.log(ele.files[0].name);
+            $scope.file = ele.files[0];
+
+            $scope.getFile();
+        }
+
+        $scope.getFile = function(){
+            fileReader.readAsDataUrl($scope.file, $scope)
+                    .then(function(result) {
+                        $scope.task = {
+                          file : result
+                        };
+                    });
+        }
+    });
+</script>
+</head>
+<body>
+<div ng-controller="myCtrl">
+    <input type="text" ng-model="task.file"/>
+    <input type="file" ng-model="image" onchange="angular.element(this).scope().uploadImage(this)"/>
+</div>
+</body>
+</html>

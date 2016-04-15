@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<script src="../../assets/vendor/angular/angular.min.js"></script>
+<script>
+angular.module('myApp',[]).controller('myCtrl',function ($scope) {
+    $scope.uploadImage = function (ele) {
+
+        console.log(ele.files[0].name);
+        $scope.$apply(function () {
+            $scope.myFile = ele.files[0];
+        });
+    }
+});
+</script>
+</head>
+<body>
+<div ng-controller="myCtrl">
+    <input type="text" ng-model="myFile.name"/>
+    <input type="file" onchange="angular.element(this).scope().uploadImage(this)"/>
+</div>
+</body>
+</html>
