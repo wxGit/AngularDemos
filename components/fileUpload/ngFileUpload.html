@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FileUpload</title>
+<script src="../../assets/vendor/angular/angular.min.js"></script>
+<script src="../../assets/plugins/ng-file-upload/dist/ng-file-upload-shim.min.js"></script>
+<script src="../../assets/plugins/ng-file-upload/dist/ng-file-upload.min.js"></script>
+<script>
+
+angular.module('fileUpload',['ngFileUpload']).controller('MyCtrl', ['$scope', 'Upload', function ($scope, Upload) {
+    // upload later on form submit or something similar
+    $scope.submit = function() {
+        if ($scope.form.file.$valid && $scope.file) {
+            $scope.upload($scope.file);
+        }
+    };
+
+    // upload on file select or drop
+    $scope.upload = function (file) {
+        Upload.upload({
+            url: 'http://www.baidu.com',
+            data: {file: file, 'username': $scope.username}
+        }).then(function (resp) {
+            console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+        }, function (resp) {
+            console.log('Error status: ' + resp.status);
+        }, function (evt) {
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        });
+    };
+    // for multiple files:
+    $scope.uploadFiles = function (files) {
+        if (files && files.length) {
+            for (var i = 0; i < files.length; i++) {
+                Upload.upload({
+                    url: 'server/upload/url',
+                    data: {file: files[i]}
+                }).then(function(resp) {
+                    // file is uploaded successfully
+                    console.log('file ' + resp.config.data.file.name + 'is uploaded successfully. Response: ' + resp.data);
+                }, function(resp) {
+                    // handle error
+                }, function(evt) {
+                    // progress notify
+                    console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.data.file.name);
+                });
+            }
+
+            // or send them all together for HTML5 browsers:
+            Upload.upload({
+                url: 'server/upload/url',
+                data: {file: files[i]}
+            }).then(function(resp) {
+                // file is uploaded successfully
+                console.log('file ' + resp.config.data.file.name + 'is uploaded successfully. Response: ' + resp.data);
+            }, function(resp) {
+                // handle error
+            }, function(evt) {
+                // progress notify
+                console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.data.file.name);
+            });
+        }
+    }
+}]);
+
+</script>
+</head>
+<body ng-app="fileUpload" ng-controller="MyCtrl" >
+
+Upload on form submit or button click
+<form name="form">
+    Single Image with validations
+    <div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+         ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
+         ngf-resize="{width: 100, height: 100}">Select</div>
+    Multiple files
+    <div class="button" ngf-select ng-model="files" ngf-multiple="true">Select</div>
+    Drop files: <div ngf-drop ng-model="files" class="drop-box">Drop</div>
+    <button type="submit" ng-click="submit()">submit</button>
+</form>
+<br/>
+
+
+
+Upload right away after file selection:
+<input type="file" class="button" ngf-select="upload($file)" ngf-pattern="'image/*'" ngf-accept="'image/*'"/>Upload on file select
+<div class="button" ngf-src="file" ngf-select="uploadFiles($files)" multiple="multiple">Upload on file select</div>
+
+<br/>
+Drop File:
+<div ngf-drop="uploadFiles($files)" class="drop-box"
+     ngf-drag-over-class="'dragover'" ngf-multiple="true"
+     ngf-pattern="'image/*,application/pdf'">Drop Images or PDFs files here</div>
+<div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+
+
+<br/>
+Image thumbnail: <img ngf-thumbnail="file || '/thumb.jpg'">
+Audio preview: <audio controls ngf-src="file"></audio>
+Video preview: <video controls ngf-src="file"></video>
+</body>
+</html>
