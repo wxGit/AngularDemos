@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet"/>
+</head>
+<body ng-controller="Datetimepicker">
+<form name="dataForm" novalidate ng-submit="submitDialogForm(dataForm.$valid)">
+<div class="form-group">
+    <!--<label for="dtp_input1" class="col-md-2 control-label">DateTime Picking</label>-->
+
+    <!--<div class="input-group date form_datetime col-md-5" datetimepicker="{pickTime: true}" data-ng-model="data.time">
+        <input type="text" name="Birthday" class="form-control" data-date-format="dd MM yyyy - HH:ii p" data-bv-date="true" data-bv-date-format="dd MM yyyy - HH:ii p"/>
+        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+    </div>-->
+
+    <div date-time-picker date-options="{{config}}" class="input-group date form_datetime col-md-5" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p">
+        <input class="form-control" size="16" type="text" value="" ng-model="data.time" readonly>
+        <!--<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>-->
+        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+    </div>
+
+    <!--<input type="hidden" id="dtp_input1" value="" /><br/>-->
+</div>
+
+<button class="btn btn-primary" type="submit">确定</button>
+
+</form>
+
+<script type="text/javascript" src="jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<!--<script type="text/javascript" src="js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>-->
+<script src="../../assets/vendor/angular/angular.min.js"></script>
+<script>
+    angular.module('myApp',[]).directive('dateTimePicker',function(){
+
+        var options = {
+            language:"zh-CN",
+            format:'yyyy-mm-dd hh:ii',
+            autoclose:true,
+            pickerPosition:"bottom-right"
+        };
+
+        return {
+            restrict: 'AE',
+            require: '?ngModel',
+            link: function ($scope, element, $attrs, ngModel) {
+                console.log($attrs.dateOptions);
+
+                var linkOptions = [];
+
+                if($attrs.dateOptions){
+                    linkOptions = $scope.$eval('[' + $attrs.dateOptions + ']');
+                    if(angular.isObject(options) && angular.isObject(linkOptions[0])){
+                        linkOptions[0] = angular.extend({}, options, linkOptions[0]);
+                    }
+                }
+
+                $(element).datetimepicker(linkOptions[0]).on("hide",function(){
+                    var $this = $(this);
+                    // var _this = this;
+                    var value = $this.find('input').val();
+
+                    $scope.$apply(function(){
+                        console.log(value);
+                        $scope[$this.find('input').attr('ng-model')] = value;
+                    });
+                });
+            }
+        }
+    }).directive('datetimepicker', function ($timeout) {
+        return {
+            // Restrict it to be an attribute in this case
+            restrict: 'AE',
+            // optionally hook-in to ngModel's API
+            require: '?ngModel',
+            // responsible for registering DOM listeners as well as updating the DOM
+            link: function ($scope, element, $attrs, ngModel) {
+                var $element;
+                $timeout(function () {
+
+                    $element = $(element).find("input").datetimepicker($scope.$eval($attrs.datetimepicker));
+
+                    var DateTimePicker = $element.data("DateTimePicker");
+                    DateTimePicker.setValueAngular = function (newValue) {
+                        this.angularSetValue = true; // a lock object to prevent calling change trigger of input to fix the re-cursive call of changing values
+                        this.setDate(newValue);
+                        this.angularSetValue = false;
+                    }
+
+                    if (!ngModel) { return; }//below this we interact with ngModel's controller
+
+                    $scope.$watch($attrs['ngModel'], function (newValue) {
+                        if (newValue)
+                            if (newValue != "Invalid date")
+                            {
+                                DateTimePicker.setValueAngular(newValue);
+                            }
+                    });
+
+                    ngModel.$formatters.push(function (value) {
+                        // formatting the value to be shown to the user
+                        var format = DateTimePicker.format;
+                        var date = moment(value);
+                        if (date.isValid()) {
+                            return date.format(format);
+                        }
+                        return '';
+                    });
+
+                    ngModel.$parsers.push(function toModel(input) {
+                        // format user input to be used in code (converting to unix epoch or ...)
+                        var modifiedInput = moment(input).format();
+                        return modifiedInput;
+                    });
+
+                    //update ngModel when UI changes
+                    $element.on('dp.change', function (e) {
+                        if (DateTimePicker.angularSetValue === true)
+                            return;
+
+                        var newValue = $element[0].value;
+                        if (newValue !== ngModel.$viewValue)
+                            $scope.$apply(function () {
+                                ngModel.$setViewValue(newValue);
+                            });
+                        //bootstrapvalidator support
+                        if ($element.attr('data-bv-field') !== undefined) // if the field had validation
+                            $element.closest("form").bootstrapValidator('revalidateField', $element);
+
+                    });
+                });
+            }
+        };
+    }).controller('Datetimepicker',function($scope){
+        $scope.config = {
+//            language:"zh-CN",
+//            format:'yyyy-mm-dd hh:ii',
+//            autoclose:true,
+//            pickerPosition:"bottom-right"
+        };
+
+        $scope.data = {};
+        $scope.data.time = '1979-09-19 10:00';
+
+        $scope.submitDialogForm = function(data){
+            console.log($scope.data.time);
+        }
+    });
+</script>
+</body>
+</html>
