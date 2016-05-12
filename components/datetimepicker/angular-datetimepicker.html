@@ -17,7 +17,7 @@
         <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
     </div>-->
 
-    <div date-time-picker date-options="{{config}}" class="input-group date form_datetime col-md-5" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p">
+    <div date-time-picker date-options="{{config}}" class="input-group date form_datetime col-md-5">
         <input class="form-control" size="16" type="text" value="" ng-model="data.time" readonly>
         <!--<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>-->
         <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
@@ -49,7 +49,7 @@
             restrict: 'AE',
             require: '?ngModel',
             link: function ($scope, element, $attrs, ngModel) {
-                console.log($attrs.dateOptions);
+                //console.log($attrs.dateOptions);
 
                 var linkOptions = [];
 
@@ -72,70 +72,6 @@
                 });
             }
         }
-    }).directive('datetimepicker', function ($timeout) {
-        return {
-            // Restrict it to be an attribute in this case
-            restrict: 'AE',
-            // optionally hook-in to ngModel's API
-            require: '?ngModel',
-            // responsible for registering DOM listeners as well as updating the DOM
-            link: function ($scope, element, $attrs, ngModel) {
-                var $element;
-                $timeout(function () {
-
-                    $element = $(element).find("input").datetimepicker($scope.$eval($attrs.datetimepicker));
-
-                    var DateTimePicker = $element.data("DateTimePicker");
-                    DateTimePicker.setValueAngular = function (newValue) {
-                        this.angularSetValue = true; // a lock object to prevent calling change trigger of input to fix the re-cursive call of changing values
-                        this.setDate(newValue);
-                        this.angularSetValue = false;
-                    }
-
-                    if (!ngModel) { return; }//below this we interact with ngModel's controller
-
-                    $scope.$watch($attrs['ngModel'], function (newValue) {
-                        if (newValue)
-                            if (newValue != "Invalid date")
-                            {
-                                DateTimePicker.setValueAngular(newValue);
-                            }
-                    });
-
-                    ngModel.$formatters.push(function (value) {
-                        // formatting the value to be shown to the user
-                        var format = DateTimePicker.format;
-                        var date = moment(value);
-                        if (date.isValid()) {
-                            return date.format(format);
-                        }
-                        return '';
-                    });
-
-                    ngModel.$parsers.push(function toModel(input) {
-                        // format user input to be used in code (converting to unix epoch or ...)
-                        var modifiedInput = moment(input).format();
-                        return modifiedInput;
-                    });
-
-                    //update ngModel when UI changes
-                    $element.on('dp.change', function (e) {
-                        if (DateTimePicker.angularSetValue === true)
-                            return;
-
-                        var newValue = $element[0].value;
-                        if (newValue !== ngModel.$viewValue)
-                            $scope.$apply(function () {
-                                ngModel.$setViewValue(newValue);
-                            });
-                        //bootstrapvalidator support
-                        if ($element.attr('data-bv-field') !== undefined) // if the field had validation
-                            $element.closest("form").bootstrapValidator('revalidateField', $element);
-
-                    });
-                });
-            }
-        };
     }).controller('Datetimepicker',function($scope){
         $scope.config = {
 //            language:"zh-CN",

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<link rel="stylesheet" href="idangerous.swiper.css"/>
+<style>
+    img {
+        /*width: 100%;*/
+        /*display: block;*/
+        /*max-width: 100%;*/
+    }
+</style>
+<script src="http://cdn.bootcss.com/angular.js/1.5.0/angular.min.js"></script>
+<script src="idangerous.swiper.js"></script>
+<script src="angular-swiper.js"></script>
+<script>
+angular.module('myApp',['angular-swiper']).controller('AngularSwiper',function($scope){
+    $scope.banners = [{
+        'imgUrl':'banner.jpg'
+    },{
+        'imgUrl':'banner1.png'
+    }];
+});
+</script>
+</head>
+<body ng-controller="AngularSwiper">
+    <div class="navBanner" style="width: 100%;">
+        <div swiper="{mode:'horizontal'}">
+            <slide ng-repeat="slide in banners" ng-click="select(slide)">
+                <img src="{{slide.imgUrl}}" alt=""/>
+            </slide>
+        </div>
+    </div>
+</body>
+</html>
