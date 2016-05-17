@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Swiper demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="../bower_components/swiper/dist/css/swiper.min.css">
+
+<style>
+html, body {
+    position: relative;
+    height: 100%;
+}
+body {
+    background: #eee;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color:#000;
+    margin: 0;
+    padding: 0;
+}
+
+.myslides {
+    background: #eee;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    /*border-bottom: 1px solid gray;*/
+}
+
+.swiper-container {
+    width: 100%;
+    height: 80%;
+    padding-top: 15%;
+}
+
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: orange;
+    color: #fff;
+    
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+</style>
+
+</head>
+
+<body>
+
+    <div ng-app="demoApp" style="height:100%;">
+
+        <div class="myslides" ng-controller="TestCtrl">
+            <ks-swiper-container centered-slides="true" slides-per-view="1.25" effect="coverflow">
+                <ks-swiper-slide ng-repeat="s in ['Slide 1','Slide 2','Slide 3','Slide 4','Slide 5','Slide 6','Slide 7']">
+                    {{s}}
+                </ks-swiper-slide>
+            </ks-swiper-container>
+            <!-- <button ng-click="next()">Next</button> -->
+        </div>
+
+    </div>
+
+    <script src="../bower_components/swiper/dist/js/swiper.js"></script>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../dist/angular-swiper.js"></script>
+
+    <script>
+        var module = angular.module('demoApp', ['ksSwiper']);
+        module.controller('TestCtrl', function($scope) {
+            
+        });
+    </script>
+
+</body>
+
+</html>
