@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<script src="../../assets/vendor/angular/angular.js"></script>
+<script>
+angular.module('myApp',[]).controller('SelectCtrl',function($scope){
+    $scope.num = 3;
+    $scope.users = [
+        {name:'a',id:'1'},
+        {name:'b',id:'2'},
+        {name:'c',id:'3'}
+    ];
+    $scope.selected='2';//id的值，区分类型
+    $scope.selected=$scope.users[parseInt($scope.num)-1].id;//如果想要第一个值
+});
+</script>
+</head>
+<body>
+<div ng-controller="SelectCtrl">
+    <label>{{num}}</label>
+    <select ng-model="selected" ng-options="x.id as x.name for x in users"></select>
+</div>
+</body>
+</html>

@@ -59,6 +59,21 @@ body {
     -webkit-align-items: center;
     align-items: center;
 }
+
+.btns{
+    width:100%;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.btns button{
+    padding: 6px 10px;
+    background: green;
+    color: #fff;
+    border: none;
+    margin-right: 5px;
+    outline: none;
+}
 </style>
 
 </head>
@@ -68,12 +83,15 @@ body {
     <div ng-app="demoApp" style="height:100%;">
 
         <div class="myslides" ng-controller="TestCtrl">
-            <ks-swiper-container centered-slides="true" slides-per-view="1.25" effect="coverflow">
-                <ks-swiper-slide ng-repeat="s in ['Slide 1','Slide 2','Slide 3','Slide 4','Slide 5','Slide 6','Slide 7']">
+            <ks-swiper-container  swiper="swiper" on-ready="onReadySwiper(swiper)" on-reach-end="onReachEnd(swiper)" centered-slides="true" slides-per-view="1.25" effect="coverflow">
+                <ks-swiper-slide ng-repeat="s in data track by $index">
                     {{s}}
                 </ks-swiper-slide>
             </ks-swiper-container>
-            <!-- <button ng-click="next()">Next</button> -->
+            <div class="btns">
+                <button ng-click="prev()">Prev</button>
+                <button ng-click="next()">Next</button>
+            </div>
         </div>
 
     </div>
@@ -84,8 +102,60 @@ body {
 
     <script>
         var module = angular.module('demoApp', ['ksSwiper']);
-        module.controller('TestCtrl', function($scope) {
-            
+        module.controller('TestCtrl', function($scope,$timeout) {
+            $scope.data = ['Slide 1','Slide 2','Slide 3','Slide 4','Slide 5','Slide 6','Slide 7'];
+            $scope.swiper = {};
+            $scope.next = function() {
+                $scope.swiper.slideNext();
+            };
+            $scope.prev = function(){
+                $scope.swiper.slidePrev();
+            }
+
+           /*$scope.onReachEnd = function(swiper){
+               $scope.$apply(function(){
+                   $scope.data.push('sss');
+                   swiper.updateSlidesSize();
+                   swiper.updateClasses();
+                   swiper.update();
+                   swiper.updatePagination();
+               });
+            }*/
+
+            $scope.onReadySwiper = function(swiper) {
+
+//                console.log(swiper.getSlide($scope.data.length-2));
+
+                /*swiper.on('reachEnd', function() {
+                    console.log(111);
+
+                    $timeout(function(){
+                         $scope.data.push('sss');
+                         swiper.updateSlidesSize();
+                         swiper.updateClasses();
+                         swiper.update();
+                         swiper.updatePagination();
+                    });
+
+                });*/
+
+                swiper.on('touchStart',function(s){
+                    console.log($scope.data.length-3);
+                    console.log(s.activeIndex);
+                    if(s.activeIndex == $scope.data.length-3){
+                        $timeout(function(){
+                            $scope.data.push('sss');
+                            $scope.data.push('222');
+                            swiper.updateSlidesSize();
+                            swiper.updateClasses();
+                            swiper.update();
+                            swiper.updatePagination();
+                        });
+                    };
+                });
+
+            };
+
         });
     </script>
 

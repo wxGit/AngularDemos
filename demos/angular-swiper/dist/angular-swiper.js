@@ -34,7 +34,8 @@
 				swiper: "=",
 				overrideParameters: "=",
 				centeredSlides:"@",
-				effect:"@"
+				effect:"@",
+				onReachEnd:"&"
 			},
 			controller: ["$scope", "$element", "$timeout", function(e, r, a) {
 				var n = t();
@@ -48,7 +49,8 @@
 					initialSlide: e.initialSlide || 0,
 					showNavButtons: !1,
 					centeredSlides:e.centeredSlides || 1,
-					effect:e.effect || 1
+					effect:e.effect || 1,
+					onReachEnd: e.onReachEnd || function(){}
 				};
 				i.isUndefined(e.autoplay) || "number" != typeof e.autoplay || (s = i.extend({}, s, {
 					autoplay: e.autoplay
