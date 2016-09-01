@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>demo3</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <style>
+        .expander {
+            border: 1px solid black;
+            width: 250px;
+        }
+
+        .expander>.title {
+            background-color: black;
+            color: white;
+            padding: .3em .3em;
+            cursor: pointer;
+        }
+
+        .expander>.body {
+            padding: .1em .3em;
+        }
+
+        .kong{
+            height: 200px;
+            text-align: center;
+            padding-top: 80px;
+            font-size: 28px;
+        }
+
+        .tianji{
+            font-size: 16px;
+            display: inline-block;
+            width: 100%;
+            color: red;
+            text-align: center;
+        }
+
+    </style>
+
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../assets/vendor/angular-sanitize/angular-sanitize.js"></script>
+    <script>
+        var app = angular.module('myApp',['ngSanitize']);
+        app.directive('expander', function () {
+            return {
+                restrict : 'EA',
+                replace : true,
+                transclude : true,
+                scope : {
+                    title : '=expanderTitle'
+                },
+                template : '<div>'
+                + '<div class="title" ng-click="toggle()">{{title}}</div>'
+                + '<div class="body" ng-show="showMe" ng-transclude></div>'
+                + '</div>',
+                link : function(scope, element, attrs) {
+                    scope.showMe = false;
+                    scope.toggle = function toggle() {
+                        scope.showMe = !scope.showMe;
+                    }
+                }
+            }
+        });
+
+        app.controller('SomeController', function ($scope) {
+            $scope.title = '快点我';
+            $scope.text = '<p class="kong">色即是空.</p><span class="tianji">窥探天机,还不快合上~</span>';
+        });
+
+    </script>
+</head>
+<body style="padding: 100px;">
+    <div ng-controller='SomeController'>
+        <expander class='expander' expander-title='title'>
+           <div ng-bind-html="text"></div>
+        </expander>
+    </div>
+</body>
+</html>

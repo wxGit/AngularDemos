@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>demo5</title>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script>
+        var app = angular.module('myApp',[]);
+        app.directive('pieceOfFood', function ($parse) {
+            return {
+                template: '<span>{{pieceOfFood}}</span>',
+                scope:{
+                    pieceOfFood:'@'
+                },
+                link: function (scope, element, attrs) {
+
+                    console.log(scope.pieceOfFood);   //通过scope绑定读取
+
+                    console.log(attrs.pieceOfFood);   //直接属性获取
+
+                    attrs.$observe('pieceOfFood', function (value) {   //通过attrs监控获取
+                        scope.pieceOfFood = value;
+                        console.log(value);
+                    });
+                }
+            };
+        });
+    </script>
+</head>
+<body>
+    <span piece-of-food='Fish & Chips'></span>
+</body>
+</html>

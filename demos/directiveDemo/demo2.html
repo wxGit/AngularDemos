@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>demo2</title>
+    <!--<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css"/>-->
+    <!--<script src="../../bower_components/jquery/dist/jquery.js"></script>-->
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script>
+        var app = angular.module('myApp',[]);
+        app.directive('helloWorld', function () {
+            return {
+                restrict: 'EA',
+                template: '<div style="font-size: 30px;padding: 100px;">Hi I\'m Here!  <span ng-transclude></span></div>',
+                replace: false,
+                transclude: true
+            };
+        });
+    </script>
+</head>
+<body>
+    <hello-world>
+        <span>天啦~我竟然没有消失!</span>
+    </hello-world>
+</body>
+</html>

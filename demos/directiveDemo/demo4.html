@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>demo3</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <style>
+        .expander {
+            border: 1px solid black;
+            width: 250px;
+        }
+
+        .expander>.title {
+            background-color: black;
+            color: white;
+            padding: .3em .3em;
+            cursor: pointer;
+        }
+
+        .expander>.body {
+            padding: .1em .3em;
+        }
+
+        .kong{
+            height: 200px;
+            text-align: center;
+            padding-top: 80px;
+            font-size: 28px;
+        }
+
+        .tianji{
+            font-size: 16px;
+            display: inline-block;
+            width: 100%;
+            color: red;
+            text-align: center;
+        }
+
+        .wopasi{
+            padding: 20px;
+            text-align: center;
+        }
+
+    </style>
+
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../assets/vendor/angular-sanitize/angular-sanitize.js"></script>
+    <script>
+        var app = angular.module('myApp',['ngSanitize']);
+
+        app.directive('accordion', function() {
+            return {
+                restrict : 'EA',
+                replace : true,
+                transclude : true,
+                template : '<div ng-transclude></div>',
+                controller : function() {
+                    var expanders = [];
+                    this.gotOpened = function(selectedExpander) {
+                        angular.forEach(expanders, function(expander) {
+                            if (selectedExpander != expander) {
+                                expander.showMe = false;
+                            }
+                        });
+                    }
+                    this.addExpander = function(expander) {
+                        expanders.push(expander);
+                    }
+                }
+            }
+        });
+
+        app.directive('expander', function () {
+            return {
+                restrict : 'EA',
+                replace : true,
+                transclude : true,
+                require : '^?accordion',
+                scope : {
+                    title : '=expanderTitle'
+                },
+                template : '<div>'
+                + '<div class="title" ng-click="toggle()">{{title}}</div>'
+                + '<div class="body" ng-show="showMe" ng-transclude></div>'
+                + '</div>',
+                link : function(scope, element, attrs, accordionController) {
+                    scope.showMe = false;
+                    accordionController.addExpander(scope);
+                    scope.toggle = function toggle() {
+                        scope.showMe = !scope.showMe;
+                        accordionController.gotOpened(scope);
+                    }
+                }
+            }
+        });
+
+        app.controller('SomeController', function ($scope) {
+            $scope.expanders = [{
+                title : '老大',
+                text : '<p class="wopasi">老不死的</p>'
+            }, {
+                title : '老二',
+                text : '<p class="wopasi">犯二神君</p>'
+            }, {
+                title : '小三',
+                text : '<p class="wopasi">你懂得~</p>'
+            }];
+        });
+
+    </script>
+</head>
+<body style="padding: 100px;">
+<div ng-controller='SomeController'>
+    <accordion>
+        <expander class='expander' ng-repeat='expander in expanders' expander-title='expander.title'>
+            <div ng-bind-html="expander.text"></div>
+        </expander>
+    </accordion>
+</div>
+</body>
+</html>

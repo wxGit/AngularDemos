@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>demo11</title>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script>
+        var app = angular.module('myApp',[]);
+        app.directive("myDirective", function () {
+            var obj = {
+                restrict: "AE",
+                scope: {
+                    name: '@myName',
+                    age: '=',
+                    changeAge: '&changeMyAge'
+                },
+                replace: true,
+                template: "<div class='my-directive'>" +
+                            "<h3>下面部分是我们创建的指令生成的</h3>" +
+                            "我的名字是：<span ng-bind='name'></span><br/>" +
+                            "我的年龄是：<span ng-bind='age'></span><br/>" +
+                            "在这里修改名字：<input type='text' ng-model='name'><br/>" +
+                            "<button ng-click='changeAge()'>修改年龄</button>" +
+                          " </div>"
+            }
+            return obj;
+        });
+
+        app.controller('MyController', function ($scope) {
+            $scope.name = "dreamapple";
+            $scope.age = 20;
+            $scope.changeAge = function(){
+                $scope.age = parseInt($scope.age,10)+1;
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container" ng-controller="MyController">
+        <div class="my-info">我的名字是：<span ng-bind="name"></span>
+
+            <br/>我的年龄是：<span ng-bind="age"></span>
+            <br />
+        </div>
+        <div class="my-directive" my-directive my-name="{{name}}" age="age"  change-my-age="changeAge()"></div>
+    </div>
+</body>
+</html>

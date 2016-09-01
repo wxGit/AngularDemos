@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>demo7</title>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script>
+        var app = angular.module('myApp',[]);
+        app.directive('pieceOfFood', function () {
+            return {
+                template: '<span>{{pieceOfFood}}</span>',
+                scope:{
+                    pieceOfFood:"="
+                },
+                link: function (scope, element, attrs) {
+
+                    console.log(scope.abc);    //scope隔离了作用域,这样读不到
+
+                    console.log(scope.$parent.abc);   //通过$parent读取
+
+                    console.log(scope.pieceOfFood);
+                }
+            };
+        });
+
+        app.controller('foodCtrl', function ($scope) {
+            $scope.abc = 'abcdef';
+            $scope.piece = 'Fish & Chips';
+        });
+    </script>
+</head>
+<body ng-controller="foodCtrl">
+    <span piece-of-food='piece'></span>
+</body>
+</html>

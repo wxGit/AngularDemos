@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>demo10</title>
+    <style>
+        .red{
+            color: red;
+        }
+    </style>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script>
+        var app = angular.module('myApp',[]);
+        app.directive('countable', function () {
+            return {
+                template: '<div>Click me <span class="red">{{remaining}}</span> more times! (<span class="red">{{count}}</span>)</div>',
+                replace: true,
+                scope: {
+                    count: '=countable'
+                },
+                link: function (scope, element, attrs) {
+                    scope.remaining = 10;
+
+                    element.bind('click', function () {
+                        scope.remaining--;
+                        scope.count++;
+                        scope.$apply();
+                    });
+                }
+            };
+        });
+
+        app.controller('foodCtrl', function ($scope) {
+            $scope.clicks = 0;
+        });
+    </script>
+</head>
+<body ng-controller="foodCtrl">
+    <button countable='clicks'></button>
+    <p>Got <span class="red">{{clicks}}</span> clicks!</p>
+</body>
+</html>

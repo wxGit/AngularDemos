@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>demo12</title>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script>
+        var app = angular.module('myApp',[]);
+        app.directive("helloWorld", function () {
+            return {
+                scope: {},
+                restrict: 'AE',
+                replace: true,
+                template: '<p style="background-color:{{color}}">Hello World</p>',
+                link: function(scope, elem, attrs) {
+
+                    elem.bind('click', function() {
+                        elem.css('background-color','red');
+                        scope.$apply(function() {
+                            scope.color = "red";
+                        });
+                    });
+
+                    elem.bind('mouseover', function() {
+                        elem.css('cursor', 'pointer');
+                    });
+
+                }
+            };
+        });
+
+    </script>
+</head>
+<body>
+    <hello-world></hello-world>
+</body>
+</html>

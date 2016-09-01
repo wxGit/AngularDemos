@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>demo8</title>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script>
+        var app = angular.module('myApp',[]);
+        app.directive('pieceOfFood', function () {
+            return {
+                template: '{{pieceOfFood}}',
+                scope: {
+                    pieceOfFood:'&'
+                },
+                link: function (scope, element, attrs) {
+                    scope.pieceOfFood();
+                }
+            };
+        });
+
+        app.controller('foodCtrl', function ($scope) {
+            $scope.piece = function (item) {
+                console.log(item);
+            }
+        });
+    </script>
+</head>
+<body ng-controller="foodCtrl">
+    <p piece-of-food='piece(123)'></p>
+</body>
+</html>

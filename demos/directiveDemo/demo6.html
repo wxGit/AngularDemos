@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>demo6</title>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script>
+        var app = angular.module('myApp',[]);
+        app.directive('pieceOfFood', function () {
+            return {
+                template: '<span>{{pieceOfFood}}</span>',
+                link: function (scope, element, attrs) {
+
+                    attrs.$observe('pieceOfFood', function (value) {
+                        scope.pieceOfFood = scope.$eval(value);
+                        console.log(value);
+                        console.log(scope.$eval(value));
+                    });
+                }
+            };
+        });
+
+        app.controller('foodCtrl', function ($scope) {
+            $scope.abc = 'abcdef';
+            $scope.piece = 'Fish & Chips';
+        });
+    </script>
+</head>
+<body ng-controller="foodCtrl">
+    <span piece-of-food='piece'></span>
+</body>
+</html>
